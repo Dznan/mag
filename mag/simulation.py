@@ -9,7 +9,7 @@ def integration_equation(m, mi, gamma, dt, alpha, H):
     return res
 
 
-def magnetic_simulation(cells, gamma_D=1/3, max_iteration=50, eps=1e-4):
+def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=0.01, max_iteration=50, eps=1e-4):
     iteration = 0
     error = 1e8
 
@@ -28,6 +28,7 @@ def magnetic_simulation(cells, gamma_D=1/3, max_iteration=50, eps=1e-4):
 
     H = []
     while error > eps or iteration < max_iteration:
+        error = 0.0
         # traversal of all the magnetic moments
         for i, cell in enumerate(cells):
             HE = 0.
@@ -46,7 +47,25 @@ def magnetic_simulation(cells, gamma_D=1/3, max_iteration=50, eps=1e-4):
 
             for particle in cell.particles:
                 # integrate m
-                m = fsolve(integration_equation, x0=np.array([0.0, 0.0, 0.0]))
+                alpha = gamma * eta * particle.Ms
 
-        # compute error
+                # compute H^(i+1/2)
+                H_ = 3/2 * H[-1] - 1/2 * H[-2]
+                m = fsolve(
+                    integration_equation,
+                    x0=np.array([0.0, 0.0, 0.0]),
+                    args=(particle.m, gamma, dt, alpha, H_)
+                )
+
+                # update H^(i+1)
+                H.append(Heff + alpha * np.cross(particle.m, Heff))
+
+                # update M
+                particle.M = m * particle.Ms
+
+                # compute error
+                # TODO: Normalize Heff to h
+                h = normalize(Heff)
+                error += np.linalg.norm(np.cross(particle.m, h))
+
         iteration += 1
