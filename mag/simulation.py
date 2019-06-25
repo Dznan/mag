@@ -26,15 +26,12 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=0.01, max_iteration=5
             Dij.append(1 / (4 * np.pi * rn ** 3) * (np.eye(3) - 3 / (rn ** 2) * (np.dot(rij, rij.T))))
         D.append(Dij)
 
-    # TODO: Initialize H when iter = 0
-    H = []
     while error > eps or iteration < max_iteration:
         error = 0.0
         # traversal of all the magnetic moments
         for i, cell in enumerate(cells):
             # TODO: compute HE and HK
-            HE = 0.
-            HK = 0.
+            HE, HK = 0., 0.
 
             # compute Hexo_D
             Hexo_D = 0.
@@ -48,10 +45,13 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=0.01, max_iteration=5
             Heff = HE + Hexo_D + Hendo_D + HK
 
             for particle in cell.particles:
+                H = particle._context['H']
+
                 # integrate m
                 alpha = gamma * eta * particle.Ms
 
                 # compute H^(i+1/2)
+                # TODO: calculate H^0 and H^(1/2)
                 H_ = 3/2 * H[-1] - 1/2 * H[-2]
                 m = fsolve(
                     integration_equation,
