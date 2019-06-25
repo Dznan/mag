@@ -11,7 +11,7 @@ def integration_equation(m, mi, gamma, dt, alpha, H):
     return res
 
 
-def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-4, max_iteration=500, eps=1e-4, warm_start=False):
+def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=1/3, dt=1e-4, max_iteration=500, eps=1e-4, warm_start=False):
     iteration = 0
     error = 1e8
 
@@ -35,7 +35,8 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-4, max_iteration=5
         # traversal of all the magnetic moments
         for i, cell in enumerate(cells):
             # TODO: compute HE and HK
-            HE, HK = np.array([50e-6, 50e-6, 0]), 0.
+            # HE, HK = np.array([50e-6, 50e-6, 0]), 0.
+            HK = 0.
 
             # compute Hexo_D
             Hexo_D = 0.
@@ -50,11 +51,16 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-4, max_iteration=5
             # compute Heff
             Heff = HE + Hexo_D + Hendo_D + HK
             # Heff = HE
-            print('H', Heff)
+            print('H', np.round(Heff / np.linalg.norm(Heff), 3))
 
             for particle in cell.particles:
+                if not particle._changeable:
+                    continue
+
                 H = particle._cache['H']
                 m = particle._cache['m']
+
+                particle._cache['Heff'].append(Heff)
 
                 # integrate m
                 alpha = gamma * eta * particle.Ms
@@ -88,7 +94,7 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-4, max_iteration=5
                     # update M
                     particle.M = m[-1] * particle.Ms
 
-                print('m', m[-1])
+                print('m', np.round(m[-1], 3))
 
                 # compute error
                 h = Heff / np.linalg.norm(Heff)

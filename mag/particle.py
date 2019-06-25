@@ -2,11 +2,13 @@ import numpy as np
 
 
 class Particle:
-    def __init__(self, position=None, M=None):
+    def __init__(self, position=None, M=None, changeable=True):
         self._position = position
         self._magnetic_moment_density = M
+        self._changeable = changeable
         self._cache = {
             'H': [],
+            'Heff': [],
             'm': []
         }
     
