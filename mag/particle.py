@@ -4,8 +4,8 @@ import numpy as np
 class Particle:
     def __init__(self, position=None, M=None, Heff=None):
         self._position = position
-        self._magnetic_moment = M
-        self._effective_magnetic_field = Heff
+        self._magnetic_moment_density = M
+        # self._effective_magnetic_field = Heff
     
     @property
     def position(self):
@@ -21,41 +21,41 @@ class Particle:
     
     @property
     def Ms(self):
-        return np.linalg.norm(self._magnetic_moment)
+        return np.linalg.norm(self._magnetic_moment_density)
 
     @property
     def m(self):
-        return self._magnetic_moment / self.Ms
+        return self._magnetic_moment_density / self.Ms
     
     @property
     def M(self):
-        return self._magnetic_moment
+        return self._magnetic_moment_density
 
     @M.setter
     def M(self, _M):
-        self._magnetic_moment = _M
+        self._magnetic_moment_density = _M
 
     @property
-    def magnetic_moment(self):
-        return self._magnetic_moment
+    def magnetic_moment_density(self):
+        return self._magnetic_moment_density
 
     @magnetic_moment.setter
-    def magnetic_moment(self, _m):
-        self._magnetic_moment = _m
+    def magnetic_moment_density(self, _m):
+        self._magnetic_moment_density = _m
     
-    @property
-    def Heff(self):
-        return self._effective_magnetic_field
+    # @property
+    # def Heff(self):
+    #     return self._effective_magnetic_field
     
-    @Heff.setter
-    def Heff(self, h):
-        self._effective_magnetic_field = h
+    # @Heff.setter
+    # def Heff(self, h):
+    #     self._effective_magnetic_field = h
 
-    @property
-    def effective_magnetic_field(self):
-        return self._effective_magnetic_field
+    # @property
+    # def effective_magnetic_field(self):
+    #     return self._effective_magnetic_field
     
-    @effective_magnetic_field.setter
-    def effective_magnetic_field(self, h):
-        self._effective_magnetic_field = h
+    # @effective_magnetic_field.setter
+    # def effective_magnetic_field(self, h):
+    #     self._effective_magnetic_field = h
     

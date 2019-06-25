@@ -3,10 +3,10 @@ import numpy as np
 
 
 class Cell:
-    def __init__(self, position=None, num_of_magnetic_moment=2, radius=0.1):
+    def __init__(self, position=None, num_of_particle=2, radius=0.1):
         self.position = position
-        self.num_of_magnetic_moment = num_of_magnetic_moment
-        self.particles = [Particle(position) for i in range(num_of_magnetic_moment)]
+        self.num_of_particle = num_of_particle
+        self.particles = [Particle(position) for i in range(num_of_particle)]
         self.radius = radius
         self.volume = 4 / 3 * np.pi ** 3
 
