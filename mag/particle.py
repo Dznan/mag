@@ -39,7 +39,7 @@ class Particle:
     def magnetic_moment_density(self):
         return self._magnetic_moment_density
 
-    @magnetic_moment.setter
+    @magnetic_moment_density.setter
     def magnetic_moment_density(self, _m):
         self._magnetic_moment_density = _m
     

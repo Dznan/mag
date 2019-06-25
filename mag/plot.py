@@ -10,7 +10,7 @@ def plot_cell(cells):
     for cell in cells:
         cir = Circle(xy=cell.position, radius=cell.radius, fill=None)
         ax.add_patch(cir)
-        for particle in cells.particles:
-            ax.quiver(particle.position[0], particle.position[1], particle.m[0], particle.m[1])
+        # for particle in cell.particles:
+        #     ax.quiver(particle.position[0], particle.position[1], particle.m[0], particle.m[1])
     ax.set_aspect(1)
     plt.show()
