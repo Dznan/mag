@@ -4,7 +4,7 @@ import numpy as np
 
 class Cell:
     # TODO: Ms的初始化
-    def __init__(self, position=None, Ms=1, radius=0.1):
+    def __init__(self, position=None, Ms=8e-5, radius=0.1):
         self.position = position
         self.num_of_particle = 2
         zero_vec = np.zeros(3)
@@ -28,4 +28,4 @@ class Cell:
         for particle in self.particles:
             _M += particle.M
         # TODO: 是否需要除以len(particles)
-        return _M / len(particles)
+        return _M / len(self.particles)

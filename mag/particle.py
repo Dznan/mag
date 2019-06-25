@@ -2,11 +2,12 @@ import numpy as np
 
 
 class Particle:
-    def __init__(self, position=None, M=None, Heff=None):
+    def __init__(self, position=None, M=None):
         self._position = position
         self._magnetic_moment_density = M
-        self._context = {
+        self._cache = {
             'H': [],
+            'm': []
         }
     
     @property
