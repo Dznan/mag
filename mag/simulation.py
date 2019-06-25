@@ -10,7 +10,7 @@ def integration_equation(m, mi, gamma, dt, alpha, H):
     return res
 
 
-def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-6, max_iteration=50, eps=1e-4, warm_start=False):
+def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-8, max_iteration=50, eps=1e-4, warm_start=False):
     iteration = 0
     error = 1e8
 
@@ -34,7 +34,7 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-6, max_iteration=5
         # traversal of all the magnetic moments
         for i, cell in enumerate(cells):
             # TODO: compute HE and HK
-            HE, HK = 50e6, 0.
+            HE, HK = np.array([50e-6, 50e-6, 0]), 0.
 
             # compute Hexo_D
             Hexo_D = 0.
@@ -47,7 +47,8 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-6, max_iteration=5
             Hendo_D = - gamma_D * cell.M
 
             # compute Heff
-            Heff = HE + Hexo_D + Hendo_D + HK
+            # Heff = HE + Hexo_D + Hendo_D + HK
+            Heff = HE
             print(Heff)
 
             for particle in cell.particles:

@@ -6,11 +6,12 @@ class Cell:
     # TODO: Ms的初始化
     def __init__(self, position=None, Ms=8e-5, radius=0.1):
         self.position = position
-        self.num_of_particle = 2
+        # self.num_of_particle = 2
         zero_vec = np.zeros(3)
         m = np.random.randn(3)
         m = m / np.linalg.norm(m)
-        self.particles = [Particle(position, m * Ms), Particle(position, -m * Ms)]
+        # self.particles = [Particle(position, m * Ms), Particle(position, -m * Ms)]
+        self.particles = [Particle(position, m * Ms)]
         self.radius = radius
         self.volume = 4 / 3 * np.pi ** 3
 

@@ -29,3 +29,23 @@ def plot_cell(cells):
         ax.set_aspect(1)
         plt.savefig('picture/{}.png'.format(i))
         plt.close()
+
+
+def plot_3D_cell(cells):
+    for i in range(len(cells[0].particles[0]._cache['m'])):
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        for cell in cells:
+            for particle in cell.particles:
+                ax.quiver(
+                    particle.position[0],
+                    particle.position[1],
+                    particle.position[2],
+                    particle._cache['m'][i][0],
+                    particle._cache['m'][i][1],
+                    particle._cache['m'][i][2],
+                    length=0.001, normalize=True
+                )
+        # ax.set_aspect(1)
+        plt.savefig('picture/{}.png'.format(i))
+        plt.close()
