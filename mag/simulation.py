@@ -6,11 +6,12 @@ from scipy.optimize import fsolve
 def integration_equation(m, mi, gamma, dt, alpha, H):
     coeff = gamma * dt / (2 * (1 + alpha ** 2))
     # print(coeff)
+    # print(coeff, np.cross(m, H))
     res = m + coeff * np.cross(m, H) - mi + coeff * np.cross(mi, H)
     return res
 
 
-def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-8, max_iteration=50, eps=1e-4, warm_start=False):
+def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-4, max_iteration=500, eps=1e-4, warm_start=False):
     iteration = 0
     error = 1e8
 
@@ -47,9 +48,9 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-8, max_iteration=5
             Hendo_D = - gamma_D * cell.M
 
             # compute Heff
-            # Heff = HE + Hexo_D + Hendo_D + HK
-            Heff = HE
-            print(Heff)
+            Heff = HE + Hexo_D + Hendo_D + HK
+            # Heff = HE
+            print('H', Heff)
 
             for particle in cell.particles:
                 H = particle._cache['H']
@@ -87,7 +88,7 @@ def magnetic_simulation(cells, gamma, eta, gamma_D=1/3, dt=1e-8, max_iteration=5
                     # update M
                     particle.M = m[-1] * particle.Ms
 
-                # print(m[-1])
+                print('m', m[-1])
 
                 # compute error
                 h = Heff / np.linalg.norm(Heff)

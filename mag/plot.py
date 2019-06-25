@@ -44,8 +44,11 @@ def plot_3D_cell(cells):
                     particle._cache['m'][i][0],
                     particle._cache['m'][i][1],
                     particle._cache['m'][i][2],
-                    length=0.001, normalize=True
+                    length=1, normalize=True
                 )
         # ax.set_aspect(1)
+        ax.set_xlim3d([-1, 1])
+        ax.set_ylim3d([-1, 1])
+        ax.set_zlim3d([-1, 1])
         plt.savefig('picture/{}.png'.format(i))
         plt.close()
