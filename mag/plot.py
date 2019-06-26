@@ -32,9 +32,18 @@ def plot_cell(cells):
 
 
 def plot_3D_cell(cells):
-    for i in range(len(cells[0].particles[0]._cache['m'])):
+    for i in range(len(cells[0].particles[0]._cache['Heff'])):
         fig = plt.figure()
         ax = fig.gca(projection='3d')
+        ax.quiver(
+            cells[0].particles[0].position[0],
+            cells[0].particles[0].position[1],
+            cells[0].particles[0].position[2],
+            cells[0].particles[0]._cache['Heff'][i][0],
+            cells[0].particles[0]._cache['Heff'][i][1],
+            cells[0].particles[0]._cache['Heff'][i][2],
+            length=0.5, normalize=True, color='k'
+        )
         for cell in cells:
             for particle in cell.particles:
                 ax.quiver(
@@ -44,7 +53,7 @@ def plot_3D_cell(cells):
                     particle._cache['m'][i][0],
                     particle._cache['m'][i][1],
                     particle._cache['m'][i][2],
-                    length=1, normalize=True
+                    length=1, normalize=True, color='b'
                 )
         # ax.set_aspect(1)
         ax.set_xlim3d([-1, 1])
