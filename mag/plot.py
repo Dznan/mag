@@ -45,7 +45,8 @@ def plot_3D_cell(cells, scale=10):
                 cell.particles[0]._cache['Heff'][i][0],
                 cell.particles[0]._cache['Heff'][i][1],
                 cell.particles[0]._cache['Heff'][i][2],
-                length=0.5 * scale, normalize=True, color='k'
+                # length: easy axis modify, 0.5 * scale before
+                length=5e3*np.linalg.norm(cell.particles[0].position - cell.particles[0]._cache['Heff'][i]), normalize=True, color='k'
             )
             for particle in cell.particles:
                 dmdt = -np.cross(particle._cache['m'][i], particle._cache['H'][i])

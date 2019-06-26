@@ -4,7 +4,7 @@ import numpy as np
 
 class Cell:
     # TODO: Ms的初始化
-    def __init__(self, position=None, Ms=8e-5, num_of_particle=2, radius=0.1, changeable=True, m=None):
+    def __init__(self, position=None, Ms=8e-5, num_of_particle=2, radius=0.1, changeable=True, m=None, Ku=0):
         self.position = position
         self.num_of_particle = num_of_particle
         self.particles = []
@@ -12,6 +12,8 @@ class Cell:
         self.volume = 4 / 3 * np.pi * self.radius ** 3
         self._changeable = changeable
         self._m = m
+        # Ku不为0时，易轴为z轴正半轴方向
+        self.Ku = Ku
 
         if self._m is None:
             if self.num_of_particle % 2 == 1:

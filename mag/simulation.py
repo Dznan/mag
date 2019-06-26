@@ -12,7 +12,8 @@ def integration_equation(m, mi, gamma, dt, alpha, H):
     return res
 
 
-def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=1/3, dt=1e-4, max_iteration=500, eps=1e-4, warm_start=False):
+def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=1/3, dt=1e-4,
+    max_iteration=500, eps=1e-4, warm_start=False):
     iteration = 0
     error = 1e8
 
@@ -38,7 +39,9 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
         for i, cell in enumerate(cells):
             # TODO: compute HE and HK
             # HE, HK = np.array([50e-6, 50e-6, 0]), 0.
-            HK = 0.
+            HK = np.array([-2 * cell.Ku * particle.m for particle in cell.particles])
+            # define z-axis as easy axis
+            HK[:, -1] = 0
 
             # compute Hexo_D
             Hexo_D = 0.
@@ -52,18 +55,18 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
 
             # compute Heff
             Heff = HE + Hexo_D + Hendo_D + HK
-            # Heff = HE
+            print('HK', np.linalg.norm(HK))
             print('Hexo_D', np.linalg.norm(Hexo_D))
             print('Heff', np.linalg.norm(Heff))
 
-            for particle in cell.particles:
+            for i, particle in enumerate(cell.particles):
                 if not particle._changeable:
                     continue
 
                 H = particle._cache['H']
                 m = particle._cache['m']
 
-                particle._cache['Heff'].append(Heff)
+                particle._cache['Heff'].append(Heff[i])
 
                 # integrate m
                 alpha = gamma * eta * particle.Ms
@@ -74,15 +77,15 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
                     H.clear()
                     m.clear()
                     m.append(particle.m)
-                    H.append(Heff + alpha * np.cross(m[0], Heff))
+                    H.append(Heff[i] + alpha * np.cross(m[0], Heff[i]))
                     grad_m = -gamma / (1 + alpha ** 2) * (np.cross(m[0], H[0]))
                     half_m = m[0] + 0.5 * dt * grad_m
-                    half_H = Heff + alpha * np.cross(half_m, Heff)
+                    half_H = Heff[i] + alpha * np.cross(half_m, Heff[i])
                     grad_half_m = -gamma / (1 + alpha ** 2) * (np.cross(half_m, half_H))
                     m.append(m[0] + dt * grad_half_m)
                 else:
                     # update H^(i+1)
-                    H.append(Heff + alpha * np.cross(particle.m, Heff))
+                    H.append(Heff[i] + alpha * np.cross(particle.m, Heff[i]))
 
                     # compute H^(i+1/2)
                     H_ = 3/2 * H[-1] - 1/2 * H[-2]
@@ -100,7 +103,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
                 # print('m', np.round(m[-1], 3))
 
                 # compute error
-                h = Heff / np.linalg.norm(Heff)
+                h = Heff[i] / np.linalg.norm(Heff[i])
                 error += np.linalg.norm(np.cross(m[-1], h))
 
         iteration += 1
