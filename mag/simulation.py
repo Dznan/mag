@@ -5,8 +5,9 @@ from scipy.optimize import fsolve
 
 def integration_equation(m, mi, gamma, dt, alpha, H):
     coeff = gamma * dt / (2 * (1 + alpha ** 2))
+    # print(alpha)
     # print(coeff)
-    # print(coeff, np.cross(m, H))
+    # print(coeff * np.cross(mi, H))
     res = m + coeff * np.cross(m, H) - mi + coeff * np.cross(mi, H)
     return res
 
@@ -64,6 +65,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
 
                 # integrate m
                 alpha = gamma * eta * particle.Ms
+                print(alpha, particle.Ms)
 
                 # First step of m
                 if iteration == 0 and not warm_start:
@@ -81,7 +83,6 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
                     H.append(Heff + alpha * np.cross(particle.m, Heff))
 
                     # compute H^(i+1/2)
-                    # TODO: calculate H^0 and H^(1/2)
                     H_ = 3/2 * H[-1] - 1/2 * H[-2]
                     m.append(
                         fsolve(
@@ -89,7 +90,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
                             x0=np.array([0.0, 0.0, 0.0]),
                             args=(particle.m, gamma, dt, alpha, H_)
                         )
-                    )         
+                    )
 
                     # update M
                     particle.M = m[-1] * particle.Ms

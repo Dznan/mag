@@ -9,7 +9,7 @@ class Cell:
         self.num_of_particle = num_of_particle
         self.particles = []
         self.radius = radius
-        self.volume = 4 / 3 * np.pi ** 3
+        self.volume = 4 / 3 * np.pi * self.radius ** 3
 
         if self.num_of_particle % 2 == 1:
             m = np.random.randn(3)
