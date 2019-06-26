@@ -13,15 +13,15 @@ params = {
     'warm_start': False
 }
 
-num_of_cell = 1
+num_of_cell = 2
 cparams = {
     # 'position': np.array([0, 0, 0]),
     'num_of_particle': 2,
     'radius': 126e-12
 }
 
-cells = [mag.Cell(position=np.random.randn(3) / 10, **cparams) for _ in range(num_of_cell)]
+cells = [mag.Cell(position=np.random.randn(3) * 5, **cparams) for _ in range(num_of_cell)]
 
 mag.magnetic_simulation(cells, **params)
 
-mag.plot_3D_cell(cells)
+mag.plot_3D_cell(cells, scale=10)

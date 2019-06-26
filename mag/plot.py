@@ -31,20 +31,21 @@ def plot_cell(cells):
         plt.close()
 
 
-def plot_3D_cell(cells):
+def plot_3D_cell(cells, scale=10):
     for i in range(len(cells[0].particles[0]._cache['Heff'])):
         fig = plt.figure()
         ax = fig.gca(projection='3d')
-        ax.quiver(
-            cells[0].particles[0].position[0],
-            cells[0].particles[0].position[1],
-            cells[0].particles[0].position[2],
-            cells[0].particles[0]._cache['Heff'][i][0],
-            cells[0].particles[0]._cache['Heff'][i][1],
-            cells[0].particles[0]._cache['Heff'][i][2],
-            length=0.5, normalize=True, color='k'
-        )
+        
         for cell in cells:
+            ax.quiver(
+                cell.particles[0].position[0],
+                cell.particles[0].position[1],
+                cell.particles[0].position[2],
+                cell.particles[0]._cache['Heff'][i][0],
+                cell.particles[0]._cache['Heff'][i][1],
+                cell.particles[0]._cache['Heff'][i][2],
+                length=0.5 * scale, normalize=True, color='k'
+            )
             for particle in cell.particles:
                 ax.quiver(
                     particle.position[0],
@@ -53,11 +54,11 @@ def plot_3D_cell(cells):
                     particle._cache['m'][i][0],
                     particle._cache['m'][i][1],
                     particle._cache['m'][i][2],
-                    length=1, normalize=True, color='b'
+                    length=1 * scale, normalize=True, color='b'
                 )
         # ax.set_aspect(1)
-        ax.set_xlim3d([-1, 1])
-        ax.set_ylim3d([-1, 1])
-        ax.set_zlim3d([-1, 1])
+        ax.set_xlim3d([-scale, scale])
+        ax.set_ylim3d([-scale, scale])
+        ax.set_zlim3d([-scale, scale])
         plt.savefig('picture/{}.png'.format(i))
         plt.close()
