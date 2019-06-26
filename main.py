@@ -18,16 +18,16 @@ num_of_fe_cell = 2
 cparams_fe = {
     'Ms': 8e-5,
     'num_of_particle': 2,
-    'radius': 126e-4
+    'radius': 126e-8
 }
 
 # permanent magnet
 num_of_pe_cell = 1
 cparams_pe = {
     'position': np.array([0, 0, 0]),
-    'Ms': 8e3,
+    'Ms': 8e4,
     'num_of_particle': 2,
-    'radius': 126e-4,
+    'radius': 126e-8,
     # m在cell中会进行规范化
     'm': np.array([-1., -1., 0])
 }
@@ -37,4 +37,4 @@ cells += [mag.Cell(**cparams_pe) for _ in range(num_of_pe_cell)]
 
 mag.magnetic_simulation(cells, **params)
 
-mag.plot_3D_cell(cells, scale=10)
+# mag.plot_3D_cell(cells, scale=10)

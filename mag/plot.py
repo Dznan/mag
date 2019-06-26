@@ -1,5 +1,4 @@
 from .cell import Cell
-import numpy as np
 from mpl_toolkits.mplot3d import Axes3D 
 from matplotlib.patches import Circle
 import matplotlib.pyplot as plt
@@ -48,9 +47,6 @@ def plot_3D_cell(cells, scale=10):
                 length=0.5 * scale, normalize=True, color='k'
             )
             for particle in cell.particles:
-                dmdt = -np.cross(particle._cache['m'][i], particle._cache['H'][i])
-                # a1 = np.cross(particle._cache['m'][i], particle._cache['Heff'][i])
-                # a2 = np.cross(particle._cache['m'][i], dmdt)
                 ax.quiver(
                     particle.position[0],
                     particle.position[1],
@@ -60,25 +56,6 @@ def plot_3D_cell(cells, scale=10):
                     particle._cache['m'][i][2],
                     length=1 * scale, normalize=True, color='b'
                 )
-                ax.quiver(
-                    particle.position[0] + particle._cache['m'][i][0] * scale,
-                    particle.position[1] + particle._cache['m'][i][1] * scale,
-                    particle.position[2] + particle._cache['m'][i][2] * scale,
-                    dmdt[0],
-                    dmdt[1],
-                    dmdt[2],
-                    length=0.2 * scale, normalize=True, color='r'
-                )
-
-                # ax.quiver(
-                #     particle.position[0] + particle._cache['m'][i][0] * scale,
-                #     particle.position[1] + particle._cache['m'][i][1] * scale,
-                #     particle.position[2] + particle._cache['m'][i][2] * scale,
-                #     a2[0],
-                #     a2[1],
-                #     a2[2],
-                #     length=0.2 * scale, normalize=True, color='g'
-                # )
         # ax.set_aspect(1)
         ax.set_xlim3d([-scale, scale])
         ax.set_ylim3d([-scale, scale])
