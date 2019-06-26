@@ -55,7 +55,7 @@ def plot_3D_cell(cells, scale=10):
                         [particle.position[0] + particle._cache['m'][j-1][0] * scale, particle.position[0] + particle._cache['m'][j][0] * scale],
                         [particle.position[1] + particle._cache['m'][j-1][1] * scale, particle.position[1] + particle._cache['m'][j][1] * scale],
                         [particle.position[2] + particle._cache['m'][j-1][2] * scale, particle.position[2] + particle._cache['m'][j][2] * scale],
-                        c='k', linestyle='--'
+                        c='k', linestyle=':'
                     )
 
                 dmdt = -np.cross(particle._cache['m'][i], particle._cache['H'][i])
@@ -90,15 +90,15 @@ def plot_3D_cell(cells, scale=10):
                     length=0.2 * scale, normalize=True, color='g'
                 )
 
-                # ax.quiver(
-                #     particle.position[0] + particle._cache['m'][i][0] * scale,
-                #     particle.position[1] + particle._cache['m'][i][1] * scale,
-                #     particle.position[2] + particle._cache['m'][i][2] * scale,
-                #     a2[0],
-                #     a2[1],
-                #     a2[2],
-                #     length=0.2 * scale, normalize=True, color='g'
-                # )
+                ax.quiver(
+                    particle.position[0] + particle._cache['m'][i][0] * scale,
+                    particle.position[1] + particle._cache['m'][i][1] * scale,
+                    particle.position[2] + particle._cache['m'][i][2] * scale,
+                    dmdt[0],
+                    dmdt[1],
+                    dmdt[2],
+                    length=0.2 * scale, normalize=True, color='y'
+                )
         # ax.set_aspect(1)
         ax.set_xlim3d([-scale, scale])
         ax.set_ylim3d([-scale, scale])
