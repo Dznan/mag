@@ -31,7 +31,8 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
         D.append(Dij)
 
     while error > eps and iteration < max_iteration:
-        print(error, iteration)
+        print('========= iteration %d =========' % iteration)
+        print('error:', error)
         error = 0.0
         # traversal of all the magnetic moments
         for i, cell in enumerate(cells):
@@ -52,7 +53,8 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
             # compute Heff
             Heff = HE + Hexo_D + Hendo_D + HK
             # Heff = HE
-            print('H', np.round(Heff / np.linalg.norm(Heff), 3))
+            print('Hexo_D', np.linalg.norm(Hexo_D))
+            print('Heff', np.linalg.norm(Heff))
 
             for particle in cell.particles:
                 if not particle._changeable:
@@ -65,7 +67,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
 
                 # integrate m
                 alpha = gamma * eta * particle.Ms
-                print(alpha, particle.Ms)
+                # print(alpha, particle.Ms)
 
                 # First step of m
                 if iteration == 0 and not warm_start:
@@ -95,7 +97,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
                     # update M
                     particle.M = m[-1] * particle.Ms
 
-                print('m', np.round(m[-1], 3))
+                # print('m', np.round(m[-1], 3))
 
                 # compute error
                 h = Heff / np.linalg.norm(Heff)
