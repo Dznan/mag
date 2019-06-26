@@ -49,8 +49,17 @@ def plot_3D_cell(cells, scale=10):
                 length=5e3*np.linalg.norm(cell.particles[0].position - cell.particles[0]._cache['Heff'][i]), normalize=True, color='k'
             )
             for particle in cell.particles:
+                # print track
+                for j in range(1, i + 1):
+                    ax.plot(
+                        [particle.position[0] + particle._cache['m'][j-1][0] * scale, particle.position[0] + particle._cache['m'][j][0] * scale],
+                        [particle.position[1] + particle._cache['m'][j-1][1] * scale, particle.position[1] + particle._cache['m'][j][1] * scale],
+                        [particle.position[2] + particle._cache['m'][j-1][2] * scale, particle.position[2] + particle._cache['m'][j][2] * scale],
+                        c='k', linestyle='--'
+                    )
+
                 dmdt = -np.cross(particle._cache['m'][i], particle._cache['H'][i])
-                a1 = np.cross(particle._cache['m'][i], particle._cache['Heff'][i])
+                a1 = -np.cross(particle._cache['m'][i], particle._cache['Heff'][i])
                 a2 = np.cross(particle._cache['m'][i], dmdt)
                 ax.quiver(
                     particle.position[0],
