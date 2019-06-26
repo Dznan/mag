@@ -52,6 +52,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
             # compute Heff
             Heff = HE + Hexo_D + Hendo_D + HK
             # Heff = HE
+            print('Hexo_D', np.round(Hexo_D, 3))
             print('H', np.round(Heff / np.linalg.norm(Heff), 3))
 
             for particle in cell.particles:
@@ -65,7 +66,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
 
                 # integrate m
                 alpha = gamma * eta * particle.Ms
-                print(alpha, particle.Ms)
+                # print(alpha, particle.Ms)
 
                 # First step of m
                 if iteration == 0 and not warm_start:
