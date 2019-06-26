@@ -4,23 +4,31 @@ import numpy as np
 
 class Cell:
     # TODO: Ms的初始化
-    def __init__(self, position=None, Ms=8e-5, num_of_particle=2, radius=0.1):
+    def __init__(self, position=None, Ms=8e-5, num_of_particle=2, radius=0.1, changeable=True, m=None):
         self.position = position
         self.num_of_particle = num_of_particle
         self.particles = []
         self.radius = radius
         self.volume = 4 / 3 * np.pi * self.radius ** 3
+        self._changeable = changeable
+        self._m = m
 
-        if self.num_of_particle % 2 == 1:
-            m = np.random.randn(3)
-            m = m / np.linalg.norm(m)
-            self.particles.append(Particle(position, m * Ms))
-            num_of_particle -= 1
-        
-        for i in range(0, num_of_particle, 2):
-            m = np.random.randn(3)
-            m /= np.linalg.norm(m)
-            self.particles += [Particle(position, m * Ms), Particle(position, -m * Ms)]
+        if self._m is None:
+            if self.num_of_particle % 2 == 1:
+                m = np.random.randn(3)
+                m = m / np.linalg.norm(m)
+                self.particles.append(Particle(position, m * Ms, changeable))
+                num_of_particle -= 1
+            
+            for i in range(0, num_of_particle, 2):
+                m = np.random.randn(3)
+                m /= np.linalg.norm(m)
+                self.particles.append(Particle(position, m * Ms, changeable))
+                self.particles.append(Particle(position, -m * Ms, changeable))
+        else:
+            self._m /= np.linalg.norm(self._m)
+            for i in range(0, num_of_particle):
+                self.particles.append(Particle(position, self._m * Ms, changeable))
 
     @property
     def mu(self):
