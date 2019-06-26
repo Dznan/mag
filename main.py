@@ -5,7 +5,7 @@ import mag
 params = {
     'gamma': 8.681e6,
     'eta': 0.01,
-    'HE': np.array([0., 0., 0.]),
+    'HE': np.array([0., 0., 50e-6]),
     'gamma_D': 0, # easy axis modify, 1/3 before.
     'dt': 5e-5, # easy axis modify, 1e-2 before.
     'max_iteration': 50,

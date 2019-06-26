@@ -50,8 +50,8 @@ def plot_3D_cell(cells, scale=10):
             )
             for particle in cell.particles:
                 dmdt = -np.cross(particle._cache['m'][i], particle._cache['H'][i])
-                # a1 = np.cross(particle._cache['m'][i], particle._cache['Heff'][i])
-                # a2 = np.cross(particle._cache['m'][i], dmdt)
+                a1 = np.cross(particle._cache['m'][i], particle._cache['Heff'][i])
+                a2 = np.cross(particle._cache['m'][i], dmdt)
                 ax.quiver(
                     particle.position[0],
                     particle.position[1],
@@ -65,10 +65,20 @@ def plot_3D_cell(cells, scale=10):
                     particle.position[0] + particle._cache['m'][i][0] * scale,
                     particle.position[1] + particle._cache['m'][i][1] * scale,
                     particle.position[2] + particle._cache['m'][i][2] * scale,
-                    dmdt[0],
-                    dmdt[1],
-                    dmdt[2],
+                    a1[0],
+                    a1[1],
+                    a1[2],
                     length=0.2 * scale, normalize=True, color='r'
+                )
+
+                ax.quiver(
+                    particle.position[0] + particle._cache['m'][i][0] * scale,
+                    particle.position[1] + particle._cache['m'][i][1] * scale,
+                    particle.position[2] + particle._cache['m'][i][2] * scale,
+                    a2[0],
+                    a2[1],
+                    a2[2],
+                    length=0.2 * scale, normalize=True, color='g'
                 )
 
                 # ax.quiver(

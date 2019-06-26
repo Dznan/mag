@@ -105,5 +105,8 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
                 # compute error
                 h = Heff[i] / np.linalg.norm(Heff[i])
                 error += np.linalg.norm(np.cross(m[-1], h))
+                print('h', h)
+                print('m', m[-1])
+                print('x', np.cross(m[-1], h))
 
         iteration += 1
