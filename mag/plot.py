@@ -28,7 +28,7 @@ def plot_cell(cells):
             for particle in cell.particles:
                 ax.quiver(particle.position[0], particle.position[1], particle._cache['m'][i][0], particle._cache['m'][i][1])
         ax.set_aspect(1)
-        plt.savefig('picture/{}.png'.format(i))
+        plt.savefig('picture/%03d.png' % i)
         plt.close()
 
 
@@ -83,5 +83,5 @@ def plot_3D_cell(cells, scale=10):
         ax.set_xlim3d([-scale, scale])
         ax.set_ylim3d([-scale, scale])
         ax.set_zlim3d([-scale, scale])
-        plt.savefig('picture/{}.png'.format(i))
+        plt.savefig('picture/%03d.png' % i)
         plt.close()
