@@ -56,7 +56,7 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
             # compute Heff
             Heff = HE + Hexo_D + Hendo_D + HK
             print('HK', np.linalg.norm(HK))
-            print('Hexo_D', np.linalg.norm(Hexo_D))
+            print('Hendo_D', Hendo_D)
             print('Heff', np.linalg.norm(Heff))
 
             for i, particle in enumerate(cell.particles):
@@ -105,8 +105,8 @@ def magnetic_simulation(cells, gamma, eta, HE=np.array([50e-6, 50e-6]), gamma_D=
                 # compute error
                 h = Heff[i] / np.linalg.norm(Heff[i])
                 error += np.linalg.norm(np.cross(m[-1], h))
-                print('h', h)
-                print('m', m[-1])
-                print('x', np.cross(m[-1], h))
+                # print('h', h)
+                # print('m', m[-1])
+                # print('x', np.cross(m[-1], h))
 
         iteration += 1

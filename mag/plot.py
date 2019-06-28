@@ -46,8 +46,8 @@ def plot_3D_cell(cells, scale=10):
                 cell.particles[0]._cache['Heff'][i][0],
                 cell.particles[0]._cache['Heff'][i][1],
                 cell.particles[0]._cache['Heff'][i][2],
-                # length: easy axis modify, 0.5 * scale before
-                length=1.0 * scale, normalize=True, color='k'
+                # length: presentation modify, 1 * scale before
+                length=5e5*np.linalg.norm(cell.particles[0]._cache['Heff'][i]), normalize=True, color='k'
                 # length=length, normalize=True, color='k'
             )
             # ax.text(
@@ -100,25 +100,25 @@ def plot_3D_cell(cells, scale=10):
                 #     length=0.2 * scale, normalize=True, color='r'
                 # )
 
-                ax.quiver(
-                    particle.position[0] + particle._cache['m'][i][0] * scale,
-                    particle.position[1] + particle._cache['m'][i][1] * scale,
-                    particle.position[2] + particle._cache['m'][i][2] * scale,
-                    a2[0],
-                    a2[1],
-                    a2[2],
-                    length=0.2 * scale, normalize=True, color='g'
-                )
+                # ax.quiver(
+                #     particle.position[0] + particle._cache['m'][i][0] * scale,
+                #     particle.position[1] + particle._cache['m'][i][1] * scale,
+                #     particle.position[2] + particle._cache['m'][i][2] * scale,
+                #     a2[0],
+                #     a2[1],
+                #     a2[2],
+                #     length=0.2 * scale, normalize=True, color='g'
+                # )
 
-                ax.quiver(
-                    particle.position[0] + particle._cache['m'][i][0] * scale,
-                    particle.position[1] + particle._cache['m'][i][1] * scale,
-                    particle.position[2] + particle._cache['m'][i][2] * scale,
-                    dmdt[0],
-                    dmdt[1],
-                    dmdt[2],
-                    length=0.2 * scale, normalize=True, color='r'
-                )
+                # ax.quiver(
+                #     particle.position[0] + particle._cache['m'][i][0] * scale,
+                #     particle.position[1] + particle._cache['m'][i][1] * scale,
+                #     particle.position[2] + particle._cache['m'][i][2] * scale,
+                #     dmdt[0],
+                #     dmdt[1],
+                #     dmdt[2],
+                #     length=0.2 * scale, normalize=True, color='r'
+                # )
         # ax.set_aspect(1)
         ax.set_xlim3d([-scale, scale])
         ax.set_ylim3d([-scale, scale])
