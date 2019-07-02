@@ -5,40 +5,18 @@ from matplotlib.patches import Circle
 import matplotlib.pyplot as plt
 
 
-# def plot_cell(cells, filename):
-#     fig = plt.figure()
-#     ax = fig.add_subplot(111)
-#     for cell in cells:
-#         cir = Circle(xy=cell.position, radius=cell.radius, fill=None)
-#         ax.add_patch(cir)
-#         for particle in cell.particles:
-#             ax.quiver(particle.position[0], particle.position[1], particle.m[0], particle.m[1])
-#     ax.set_aspect(1)
-#     plt.savefig('{}.png'.format(filename))
-#     plt.close()
 
-
-def plot_cell(cells):
-    for i in range(len(cells[0].particles[0]._cache['m'])):
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        for cell in cells:
-            cir = Circle(xy=cell.position, radius=cell.radius, fill=None)
-            ax.add_patch(cir)
-            for particle in cell.particles:
-                ax.quiver(particle.position[0], particle.position[1], particle._cache['m'][i][0], particle._cache['m'][i][1])
-        ax.set_aspect(1)
-        plt.savefig('picture/%03d.png' % i)
-        plt.close()
-
-
-def plot_3D_cell(cells, scale=10):
+def plot_3D_cell(cells, scale=10, heff_change=0, show_dmdt=False, show_rg=False):
     for i in range(len(cells[0].particles[0]._cache['Heff'])):
         fig = plt.figure()
         ax = fig.gca(projection='3d')
         
         for cell in cells:
             # length=5e3*np.linalg.norm(cell.particles[0].position - cell.particles[0]._cache['Heff'][i])
+            if heff_change == 0:
+                heff_length = 1 * scale
+            else:
+                heff_length = heff_change * np.linalg.norm(cell.particles[0]._cache['Heff'][i])
             ax.quiver(
                 cell.particles[0].position[0],
                 cell.particles[0].position[1],
@@ -47,17 +25,9 @@ def plot_3D_cell(cells, scale=10):
                 cell.particles[0]._cache['Heff'][i][1],
                 cell.particles[0]._cache['Heff'][i][2],
                 # length: presentation modify, 1 * scale before
-                length=5e5*np.linalg.norm(cell.particles[0]._cache['Heff'][i]), normalize=True, color='k'
+                length=heff_length, normalize=True, color='k'
                 # length=length, normalize=True, color='k'
             )
-            # ax.text(
-            #     # cell.particles[0].position[0] + cell.particles[0]._cache['Heff'][i][0] * scale,
-            #     # cell.particles[0].position[1] + cell.particles[0]._cache['Heff'][i][1] * scale,
-            #     # cell.particles[0].position[2] + cell.particles[0]._cache['Heff'][i][2] * scale,
-            #     0, 0, 1.2 * scale,
-            #     'Heff',
-            #     None
-            # )
             for particle in cell.particles:
                 # print track
                 for j in range(1, i + 1):
@@ -90,35 +60,37 @@ def plot_3D_cell(cells, scale=10):
                     particle._cache['m'][i][2],
                     length=1 * scale, normalize=True, color='b'
                 )
-                # ax.quiver(
-                #     particle.position[0] + particle._cache['m'][i][0] * scale,
-                #     particle.position[1] + particle._cache['m'][i][1] * scale,
-                #     particle.position[2] + particle._cache['m'][i][2] * scale,
-                #     a1[0],
-                #     a1[1],
-                #     a1[2],
-                #     length=0.2 * scale, normalize=True, color='r'
-                # )
+                if show_rg:
+                    ax.quiver(
+                        particle.position[0] + particle._cache['m'][i][0] * scale,
+                        particle.position[1] + particle._cache['m'][i][1] * scale,
+                        particle.position[2] + particle._cache['m'][i][2] * scale,
+                        dmdt[0],
+                        dmdt[1],
+                        dmdt[2],
+                        length=0.2 * scale, normalize=True, color='r'
+                    )
 
-                # ax.quiver(
-                #     particle.position[0] + particle._cache['m'][i][0] * scale,
-                #     particle.position[1] + particle._cache['m'][i][1] * scale,
-                #     particle.position[2] + particle._cache['m'][i][2] * scale,
-                #     a2[0],
-                #     a2[1],
-                #     a2[2],
-                #     length=0.2 * scale, normalize=True, color='g'
-                # )
-
-                # ax.quiver(
-                #     particle.position[0] + particle._cache['m'][i][0] * scale,
-                #     particle.position[1] + particle._cache['m'][i][1] * scale,
-                #     particle.position[2] + particle._cache['m'][i][2] * scale,
-                #     dmdt[0],
-                #     dmdt[1],
-                #     dmdt[2],
-                #     length=0.2 * scale, normalize=True, color='r'
-                # )
+                    ax.quiver(
+                        particle.position[0] + particle._cache['m'][i][0] * scale,
+                        particle.position[1] + particle._cache['m'][i][1] * scale,
+                        particle.position[2] + particle._cache['m'][i][2] * scale,
+                        a2[0],
+                        a2[1],
+                        a2[2],
+                        length=0.2 * scale, normalize=True, color='g'
+                    )
+                if show_dmdt:
+                    ax.quiver(
+                        particle.position[0] + particle._cache['m'][i][0] * scale,
+                        particle.position[1] + particle._cache['m'][i][1] * scale,
+                        particle.position[2] + particle._cache['m'][i][2] * scale,
+                        dmdt[0],
+                        dmdt[1],
+                        dmdt[2],
+                        #0.2 * scale
+                        length=10e2 * np.linalg.norm(dmdt), normalize=True, color='r'
+                    )
         # ax.set_aspect(1)
         ax.set_xlim3d([-scale, scale])
         ax.set_ylim3d([-scale, scale])
